@@ -32,14 +32,12 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runMeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.BaseGridView = new System.Windows.Forms.DataGridView();
-            this.TempOpenFIle = new System.Windows.Forms.OpenFileDialog();
-            this.CalculateWorker = new System.ComponentModel.BackgroundWorker();
-            this.APIWorker = new System.ComponentModel.BackgroundWorker();
             this.DateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GrossColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,13 +45,24 @@
             this.FeesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NetColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.runMeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TempOpenFIle = new System.Windows.Forms.OpenFileDialog();
+            this.CalculateWorker = new System.ComponentModel.BackgroundWorker();
+            this.APIWorker = new System.ComponentModel.BackgroundWorker();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.FilterComboBox = new System.Windows.Forms.ComboBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BaseGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -91,6 +100,13 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(225, 30);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
+            // runMeToolStripMenuItem
+            // 
+            this.runMeToolStripMenuItem.Name = "runMeToolStripMenuItem";
+            this.runMeToolStripMenuItem.Size = new System.Drawing.Size(225, 30);
+            this.runMeToolStripMenuItem.Text = "Highlight Sample";
+            this.runMeToolStripMenuItem.Click += new System.EventHandler(this.runMeToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
@@ -125,6 +141,10 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.BaseGridView);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(1329, 844);
             this.splitContainer1.SplitterDistance = 744;
             this.splitContainer1.TabIndex = 0;
@@ -149,10 +169,6 @@
             this.BaseGridView.RowTemplate.Height = 28;
             this.BaseGridView.Size = new System.Drawing.Size(744, 844);
             this.BaseGridView.TabIndex = 0;
-            // 
-            // TempOpenFIle
-            // 
-            this.TempOpenFIle.FileName = "openFileDialog1";
             // 
             // DateColumn
             // 
@@ -190,12 +206,52 @@
             this.NetColumn.HeaderText = "Net Amount";
             this.NetColumn.Name = "NetColumn";
             // 
-            // runMeToolStripMenuItem
+            // TempOpenFIle
             // 
-            this.runMeToolStripMenuItem.Name = "runMeToolStripMenuItem";
-            this.runMeToolStripMenuItem.Size = new System.Drawing.Size(225, 30);
-            this.runMeToolStripMenuItem.Text = "Run Me";
-            this.runMeToolStripMenuItem.Click += new System.EventHandler(this.runMeToolStripMenuItem_Click);
+            this.TempOpenFIle.FileName = "openFileDialog1";
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.IsSplitterFixed = true;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.FilterComboBox);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.dataGridView1);
+            this.splitContainer2.Size = new System.Drawing.Size(581, 844);
+            this.splitContainer2.SplitterDistance = 80;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // FilterComboBox
+            // 
+            this.FilterComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.FilterComboBox.FormattingEnabled = true;
+            this.FilterComboBox.Items.AddRange(new object[] {
+            "Less Than $1",
+            "Over $100",
+            "International"});
+            this.FilterComboBox.Location = new System.Drawing.Point(130, 43);
+            this.FilterComboBox.Name = "FilterComboBox";
+            this.FilterComboBox.Size = new System.Drawing.Size(281, 27);
+            this.FilterComboBox.TabIndex = 0;
+            this.FilterComboBox.SelectedIndexChanged += new System.EventHandler(this.FilterComboBox_SelectedIndexChanged);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 28;
+            this.dataGridView1.Size = new System.Drawing.Size(581, 760);
+            this.dataGridView1.TabIndex = 0;
             // 
             // GotchaWindow
             // 
@@ -212,9 +268,15 @@
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BaseGridView)).EndInit();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -242,6 +304,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn TypeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn NetColumn;
         private System.Windows.Forms.ToolStripMenuItem runMeToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.ComboBox FilterComboBox;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

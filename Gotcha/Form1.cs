@@ -61,6 +61,11 @@ namespace Gotcha
 
         private void runMeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            BaseGridView.Rows[5].Cells[3].Style = new DataGridViewCellStyle { BackColor = Color.Yellow };
+        }
+
+        private void FilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }
