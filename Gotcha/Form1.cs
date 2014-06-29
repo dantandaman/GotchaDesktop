@@ -20,9 +20,7 @@ namespace Gotcha
 
         int LIMITTRANS=1000; 
         int NUMFRAUDWORDS=20;
-       
-        int maxtrans=200;
-        //fixme we should calculate maxtrans eventually
+        int maxtrans=0;
         int[] mostsigdigs = new int[1000];
         float[] price = new float[1000];
         int[] distrdigs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -33,6 +31,7 @@ namespace Gotcha
         char[,] fraudwords = new char[1000,20];
         int[] fraudcount = new int[1000];
         char [,] strings = new char[1000,30];
+       
       
 
 
@@ -61,6 +60,7 @@ namespace Gotcha
                 string line;
                 while((line = sr.ReadLine()) != null)
                 {
+                    maxtrans++;
                     try
                     {
                         var row = line.Split('\t');
@@ -72,14 +72,15 @@ namespace Gotcha
                         ti.GrossAmount = float.Parse(row[1], NumberStyles.Currency);
                        // ti.Fees = row[5];
                       // ti.NetAmount = row[6];
-                        //fixme, eventually pick off row 8 instead
-                        ti.Currency = "a";
+                        //fixme, eventually pick off row 8 instead?
+                        ti.Currency = "rupee";
 
                         
                         _records.Add(ti);
                         BaseGridView.Rows.Add(row);
+                       
                     }
-                    catch (Exception ex)
+                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.ToString());
                     }
@@ -123,6 +124,7 @@ namespace Gotcha
                     row[3] = ti.Subject;
                     row[4] = "Under $1";
                    
+                
                     //this is the line which adds it to the table specifically
                     FilterGridView.Rows.Add(row);
                 }
@@ -159,8 +161,7 @@ namespace Gotcha
                 //fixme, somehow force strings to lower case somewhere
                 //fixme, ti.Currency isn't defined correctly above
                 tempEntry = ti.Currency ;
-                //fixme, get rid of the next line once you properly define ti.Currency above
-                tempEntry = "rupee";
+                
 
              if (tempEntry.Contains(tempFraudWord[j]))
 		     {
