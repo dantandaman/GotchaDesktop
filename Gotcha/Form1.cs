@@ -77,7 +77,15 @@ namespace Gotcha
             foreach(TransactionInfo ti in _records)
             {
                 if (ti.GrossAmount < 1.00)
-                    MessageBox.Show(ti.GrossAmount + " is less than $1.00");
+                {
+                    string[] row = new string[5];
+                    row[0] = ti.Date.ToString();
+                    row[1] = ti.Name;
+                    row[2] = ti.GrossAmount.ToString();
+                    row[3] = ti.Subject;
+                    row[4] = "Under $1";
+                    FilterGridView.Rows.Add(row);
+                }
             }
         }
     }
