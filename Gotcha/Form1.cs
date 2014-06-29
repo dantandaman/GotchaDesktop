@@ -110,13 +110,16 @@ namespace Gotcha
 
         private void LessThanADollar()
         {
+            int lineCounter = 0;
             foreach(TransactionInfo ti in _records)
             {
+                lineCounter++;
                 if (ti.GrossAmount < 1.00)
                 {
                     //this will add the result ti to the 2nd display view
                     //you can reorder how the stuff is displayed, just change 
-                    //fixme, what I really want here is to highlight the small transaction in the first pane. We can forget about the second pane
+                    //fixme,  this is highlighting neg. values, and I don't want it to.
+                    /*
                     string[] row = new string[5];
                     row[0] = ti.Date.ToString();
                     row[1] = ti.Name;
@@ -127,6 +130,10 @@ namespace Gotcha
                 
                     //this is the line which adds it to the table specifically
                     FilterGridView.Rows.Add(row);
+                    */
+                    BaseGridView.Rows[lineCounter-1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green};
+                 
+
                 }
             }
         }
@@ -141,6 +148,7 @@ namespace Gotcha
             char[] temp = new char[300];
             string[] tempFraudWord = new string[100];
             string tempEntry;
+            int lineCounter = 0;
             
 	        for(i=0;i<NUMFRAUDWORDS;i++)
 	            {
@@ -153,11 +161,13 @@ namespace Gotcha
 	        
             srFW.Close();
 		
-	        for(j=0;j<NUMFRAUDWORDS;j++)
+            for(j=0;j<NUMFRAUDWORDS;j++)
+            {
+             lineCounter = 0;
             foreach(TransactionInfo ti in _records)
       
 	        {
-		   
+                lineCounter++;
                 //fixme, somehow force strings to lower case somewhere
                 //fixme, ti.Currency isn't defined correctly above
                 tempEntry = ti.Currency ;
@@ -167,11 +177,12 @@ namespace Gotcha
 		     {
 			  fraudcount[j]++;
                  // highlight that entry in blue
-                 //fixme, for now, just highlight the first entry if there is a international transaction eventually highlight that transaction
-                BaseGridView.Rows[1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
-		     }	
+                //fixme, retest once you fix errors above
+                BaseGridView.Rows[lineCounter-1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
+             };
+             
 	    }	
-
+        }
 
 	
 	
