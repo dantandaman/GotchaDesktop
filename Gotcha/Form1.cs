@@ -1,5 +1,4 @@
-﻿using Gotcha.API;
-using RestSharp;
+﻿using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -112,31 +112,110 @@ namespace Gotcha
 
         private void LessThanADollar()
         {
-            int lineCounter = 0;
-            foreach(TransactionInfo ti in _records)
-            {
-                lineCounter++;
-                if (ti.GrossAmount < 1.00)
-                {
-                    //this will add the result ti to the 2nd display view
-                    //you can reorder how the stuff is displayed, just change 
-                    //fixme,  this is highlighting neg. values, and I don't want it to.
-                    /*
-                    string[] row = new string[5];
-                    row[0] = ti.Date.ToString();
-                    row[1] = ti.Name;
-                    row[2] = ti.GrossAmount.ToString();
-                    row[3] = ti.Subject;
-                    row[4] = "Under $1";
+            double value = 1.00;
+            FilterResults(value, true);
+            //int lineCounter = 0;
+            //foreach(TransactionInfo ti in _records)
+            //{
+            //    lineCounter++;
+            //    if (ti.GrossAmount < 1.00)
+            //    {
+            //        //this will add the result ti to the 2nd display view
+            //        //you can reorder how the stuff is displayed, just change 
+            //        //fixme,  this is highlighting neg. values, and I don't want it to.
+            //        /*
+            //        string[] row = new string[5];
+            //        row[0] = ti.Date.ToString();
+            //        row[1] = ti.Name;
+            //        row[2] = ti.GrossAmount.ToString();
+            //        row[3] = ti.Subject;
+            //        row[4] = "Under $1";
                    
                 
-                    //this is the line which adds it to the table specifically
-                    FilterGridView.Rows.Add(row);
-                    */
-                    BaseGridView.Rows[lineCounter-1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green};
+            //        //this is the line which adds it to the table specifically
+            //        FilterGridView.Rows.Add(row);
+            //        */
+            //        BaseGridView.Rows[lineCounter-1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green};
                  
 
+            //    }
+            //}
+        }
+
+        private void FilterResults(double priceLimit, bool lessThan)
+        {
+            for (int index = 0; index < _records.Count; index++)
+            {
+                TransactionInfo ti = _records[index];
+                if (lessThan)
+                {
+                    if ((ti.GrossAmount < priceLimit) && (ti.GrossAmount > 0)) //this checks to see if it's non-negative and less than the threshold
+                    {
+                        BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                    }
                 }
+                else
+                {
+                    if (ti.GrossAmount > priceLimit)
+                    {
+                        BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                    }
+                }
+            }
+
+        }
+
+        private void FilterResults(string matchString, bool IsRegex, bool NameMatch)
+        {
+            Regex regX = new Regex(matchString, RegexOptions.IgnoreCase);
+            for (int index = 0; index < _records.Count; index++)
+            {
+                TransactionInfo ti = _records[index];
+                if (IsRegex)
+                {
+                    if (NameMatch)
+                    {
+                        if (regX.IsMatch(ti.Name))
+                        {
+                            BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                        }
+                    }
+                    else //I assume this is on the Subject value hence, the boolean
+                    {
+                        if (regX.IsMatch(ti.Subject))
+                        {
+                            BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                        }
+                    }
+
+                }
+                else
+                {
+                    if (NameMatch)
+                    {
+                        if (ti.Name.Contains(matchString))
+                        {
+                            BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                        }
+                    }
+                    else //I assume this is on the Subject value hence, the boolean
+                    {
+                        if (ti.Subject.Contains(matchString))
+                        {
+                            BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                        }
+                    }
+                }
+
+            }
+        }
+
+        private void FilterResults(string customFilterName)
+        {
+            switch (customFilterName)
+            {
+                case "fraudword": fraudword(); break;
+                default: break;
             }
         }
 
@@ -145,51 +224,45 @@ namespace Gotcha
             //This function checks for international transactions
             //fixme, this is specific to where I put it on my machine
             StreamReader srFW = new StreamReader(@"C:\Users\mitofskya\Source\Repos\GotchaDesktop\Gotcha\SampleData\fraudulentwords.txt"); ;
-           
+
             int i, j, k;
             char[] temp = new char[300];
             string[] tempFraudWord = new string[100];
             string tempEntry;
             int lineCounter = 0;
-            
-	        for(i=0;i<NUMFRAUDWORDS;i++)
-	            {
-	         	
-                if(srFW.EndOfStream)
-			       break;
-                tempFraudWord[i] = srFW.ReadLine();
-                   
-	            }
-	        
-            srFW.Close();
-		
-            for(j=0;j<NUMFRAUDWORDS;j++)
+
+            for (i = 0; i < NUMFRAUDWORDS; i++)
             {
-             lineCounter = 0;
-            foreach(TransactionInfo ti in _records)
-      
-	        {
-                lineCounter++;
-                //fixme, somehow force strings to lower case somewhere
-                //fixme, ti.Currency isn't defined correctly above
-                tempEntry = ti.Currency ;
-                
 
-             if (tempEntry.Contains(tempFraudWord[j]))
-		     {
-			  fraudcount[j]++;
-                 // highlight that entry in blue
-                //fixme, retest once you fix errors above
-                BaseGridView.Rows[lineCounter-1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
-             };
-             
-	    }	
-        }
+                if (srFW.EndOfStream)
+                    break;
+                tempFraudWord[i] = srFW.ReadLine();
 
-	
-	
+            }
+
+            srFW.Close();
+
+            for (j = 0; j < NUMFRAUDWORDS; j++)
+            {
+                lineCounter = 0;
+                foreach (TransactionInfo ti in _records)
+                {
+                    lineCounter++;
+                    //fixme, somehow force strings to lower case somewhere
+                    //fixme, ti.Currency isn't defined correctly above
+                    tempEntry = ti.Currency;
 
 
+                    if (tempEntry.Contains(tempFraudWord[j]))
+                    {
+                        fraudcount[j]++;
+                        // highlight that entry in blue
+                        //fixme, retest once you fix errors above
+                        BaseGridView.Rows[lineCounter - 1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
+                    };
+
+                }
+            }
         }
 
 
