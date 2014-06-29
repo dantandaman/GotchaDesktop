@@ -11,7 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Braintree;
 
 
 namespace Gotcha
@@ -58,6 +58,8 @@ namespace Gotcha
             if (TempOpenFIle.ShowDialog() == DialogResult.OK)
             {
                 string path = TempOpenFIle.FileName;
+                BaseGridView.Rows.Clear();
+                _records.Clear();
                 StreamReader sr = new StreamReader(path);
                 string line;
                 while ((line = sr.ReadLine()) != null)
@@ -67,19 +69,28 @@ namespace Gotcha
                     {
                         var row = line.Split('\t');
                         TransactionInfo ti = new TransactionInfo();
-                        //  ti.Date = DateTime.Parse(row[0]);
-                        //ti.Type = row[1];
-                        //       ti.Name = row[2];
+                        ti.Date = DateTime.Parse(row[5]);
+                        ti.Id = row[0];
+                        ti.Name = row[1];
                         //      ti.Subject = row[3];
+                        ti.Currency = row[10];
                         ti.GrossAmount = float.Parse(row[11], NumberStyles.Currency);
+                        ti.Type = row[21];
                         // ti.Fees = row[5];
                         //ti.NetAmount = row[12];
                         //fixme, eventually pick off row 8 instead?
-                        ti.Currency = (string)row[10]; ;
+                       // ti.Currency = (string)row[10]; ;
 
 
                         _records.Add(ti);
-                        BaseGridView.Rows.Add(row);
+                        var displayLine = new string[6];
+                        displayLine[0] = ti.Id;
+                        displayLine[1] = ti.Date.ToString();
+                        displayLine[2] = ti.Name;
+                        displayLine[3] = ti.GrossAmount.ToString();
+                        displayLine[4] = ti.Currency;
+                        displayLine[5] = ti.Type;
+                        BaseGridView.Rows.Add(displayLine);
 
                     }
                     catch (Exception ex)
@@ -106,14 +117,22 @@ namespace Gotcha
                 mostsigdig();
                 distrdig();
             }
+            if (FilterComboBox.Text.Contains("Over $100"))
+                Over100();
             if (FilterComboBox.Text.Contains("International"))
             { easyfraudword(); }
+        }
+
+        private void Over100()
+        {
+            double value = 100.00;
+            FilterResults(value, false, Color.Pink);
         }
 
         private void LessThanADollar()
         {
             double value = 1.00;
-            FilterResults(value, true);
+            FilterResults(value, true, Color.SkyBlue);
             //int lineCounter = 0;
             //foreach(TransactionInfo ti in _records)
             //{
@@ -142,7 +161,7 @@ namespace Gotcha
             //}
         }
 
-        private void FilterResults(double priceLimit, bool lessThan)
+        private void FilterResults(double priceLimit, bool lessThan, Color c)
         {
             for (int index = 0; index < _records.Count; index++)
             {
@@ -151,21 +170,21 @@ namespace Gotcha
                 {
                     if ((ti.GrossAmount < priceLimit) && (ti.GrossAmount > 0)) //this checks to see if it's non-negative and less than the threshold
                     {
-                        BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                        BaseGridView.Rows[index].Cells[3].Style = new DataGridViewCellStyle { BackColor = c };
                     }
                 }
                 else
                 {
                     if (ti.GrossAmount > priceLimit)
                     {
-                        BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                        BaseGridView.Rows[index].Cells[3].Style = new DataGridViewCellStyle { BackColor = c };
                     }
                 }
             }
 
         }
 
-        private void FilterResults(string matchString, bool IsRegex, bool NameMatch)
+        private void FilterResults(string matchString, bool IsRegex, bool NameMatch, Color c)
         {
             Regex regX = new Regex(matchString, RegexOptions.IgnoreCase);
             for (int index = 0; index < _records.Count; index++)
@@ -177,14 +196,14 @@ namespace Gotcha
                     {
                         if (regX.IsMatch(ti.Name))
                         {
-                            BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                            BaseGridView.Rows[index].Cells[2].Style = new DataGridViewCellStyle { BackColor = c };
                         }
                     }
                     else //I assume this is on the Subject value hence, the boolean
                     {
-                        if (regX.IsMatch(ti.Subject))
+                        if (regX.IsMatch(ti.Currency))
                         {
-                            BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                            BaseGridView.Rows[index].Cells[4].Style = new DataGridViewCellStyle { BackColor = c };
                         }
                     }
 
@@ -195,14 +214,14 @@ namespace Gotcha
                     {
                         if (ti.Name.Contains(matchString))
                         {
-                            BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                            BaseGridView.Rows[index].Cells[2].Style = new DataGridViewCellStyle { BackColor = c };
                         }
                     }
                     else //I assume this is on the Subject value hence, the boolean
                     {
-                        if (ti.Subject.Contains(matchString))
+                        if (!ti.Currency.Contains(matchString))
                         {
-                            BaseGridView.Rows[index].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green };
+                            BaseGridView.Rows[index].Cells[4].Style = new DataGridViewCellStyle { BackColor = c };
                         }
                     }
                 }
@@ -214,7 +233,7 @@ namespace Gotcha
         {
             switch (customFilterName)
             {
-                case "fraudword": fraudword(); break;
+                //case "fraudword": fraudword(); break;
                 default: break;
             }
         }
@@ -222,26 +241,27 @@ namespace Gotcha
 
         private void easyfraudword()
         {
-            string tempEntry;
-            int lineCounter = 0;
-            lineCounter = 0;
-            foreach (TransactionInfo ti in _records)
-            {
-                lineCounter++;
-                //fixme, somehow force strings to lower case somewhere
-                //fixme, ti.Currency isn't defined correctly above
-                tempEntry = ti.Currency;
+            FilterResults("USD", false, false, Color.SkyBlue);
+            //string tempEntry;
+            //int lineCounter = 0;
+            //lineCounter = 0;
+            //foreach (TransactionInfo ti in _records)
+            //{
+            //    lineCounter++;
+            //    //fixme, somehow force strings to lower case somewhere
+            //    //fixme, ti.Currency isn't defined correctly above
+            //    tempEntry = ti.Currency;
 
 
-                if (tempEntry != "USD")
-                {
-                    //fraudcount[j]++;
-                    // highlight that entry in blue
-                    //fixme, retest once you fix errors above
-                    BaseGridView.Rows[lineCounter - 1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
-                };
+            //    if (tempEntry != "USD")
+            //    {
+            //        //fraudcount[j]++;
+            //        // highlight that entry in blue
+            //        //fixme, retest once you fix errors above
+            //        BaseGridView.Rows[lineCounter - 1].DefaultCellStyle.BackColor = BackColor = Color.Blue;
+            //    };
 
-            }
+            //}
 
 
 
@@ -289,7 +309,7 @@ namespace Gotcha
                         fraudcount[j]++;
                         // highlight that entry in blue
                         //fixme, retest once you fix errors above
-                        BaseGridView.Rows[lineCounter - 1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
+                        BaseGridView.Rows[lineCounter - 1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };//
                     };
 
                 }
@@ -348,12 +368,16 @@ namespace Gotcha
                 //We suspect fraud in the entire list. We need to give some type of warning
                 //I'm going to try to highlight the entire first column in orange
 
+                MessageBox.Show("There's something fishy here");
+                
 
-                for (int ii = 0; ii < maxtrans; ii++)
-                {
-                    BaseGridView.Rows[ii].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Orange };
-                }
+                //for (int ii = 0; ii < maxtrans; ii++)
+                //{
+                //    BaseGridView.Rows[ii].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Orange };
+                //}
             }
+            else
+                MessageBox.Show("Looks Clean!");
 
         }
 
@@ -424,6 +448,49 @@ namespace Gotcha
 
         }
 
+        private void loadBrainTreeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var request = new TransactionSearchRequest().Status.Is(TransactionStatus.SETTLED);
+
+            BaseGridView.Rows.Clear();
+            _records.Clear();
+            var collection = Constants.Gateway.Transaction.Search(request);
+
+            foreach (Transaction item in collection)
+            {
+
+                var ti = new TransactionInfo();
+                ti.GrossAmount = float.Parse(item.Amount.ToString(), NumberStyles.Currency);
+                ti.Name = "";//item.CurrencyIsoCode.ToString();
+                ti.Currency = item.CurrencyIsoCode.ToString();
+                ti.Id = item.Id.ToString();
+                ti.Date = item.CreatedAt.Value;
+                ti.Type = item.Type.ToString();
+                // ti.GrossAmount = float.Parse("2", NumberStyles.Currency);
+                _records.Add(ti);
+
+                var displayLine = new string[6];
+                displayLine[0] = ti.Id;
+                displayLine[1] = ti.Date.ToString();
+                displayLine[2] = ti.Name;
+                displayLine[3] = ti.GrossAmount.ToString();
+                displayLine[4] = ti.Currency;
+                displayLine[5] = ti.Type;
+                BaseGridView.Rows.Add(displayLine);
+
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void changeToleranceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
     public class TransactionInfo
@@ -433,8 +500,21 @@ namespace Gotcha
         public string Name;
         public string Subject;
         public float GrossAmount;
-        public float Fees;
-        public float NetAmount;
+        //public float Fees;
+        //public float NetAmount;
         public string Currency;
+        public string Id;
+    }
+
+    public class Constants
+    {
+        public static BraintreeGateway Gateway = new BraintreeGateway
+        {
+            Environment = Braintree.Environment.SANDBOX,
+            PublicKey = "z3nnsbgrfz3wthk4",
+            PrivateKey = "f370c8a08621aabda380abfb3a59e258",
+            MerchantId = "vd4g7gdx4th996cm"
+
+        };
     }
 }
