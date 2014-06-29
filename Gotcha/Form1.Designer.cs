@@ -30,24 +30,26 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openCustomFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadBrainTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeToleranceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.smileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.BaseGridView = new System.Windows.Forms.DataGridView();
+            this.FilterComboBox = new System.Windows.Forms.ComboBox();
+            this.TempOpenFIle = new System.Windows.Forms.OpenFileDialog();
+            this.CalculateWorker = new System.ComponentModel.BackgroundWorker();
+            this.APIWorker = new System.ComponentModel.BackgroundWorker();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GrossColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SubjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FilterComboBox = new System.Windows.Forms.ComboBox();
-            this.TempOpenFIle = new System.Windows.Forms.OpenFileDialog();
-            this.CalculateWorker = new System.ComponentModel.BackgroundWorker();
-            this.APIWorker = new System.ComponentModel.BackgroundWorker();
-            this.changeToleranceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BaseGridView)).BeginInit();
@@ -67,6 +69,7 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openCustomFileToolStripMenuItem,
             this.openFIleToolStripMenuItem,
             this.loadBrainTreeToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -74,35 +77,61 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(50, 29);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // openCustomFileToolStripMenuItem
+            // 
+            this.openCustomFileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.openCustomFileToolStripMenuItem.Name = "openCustomFileToolStripMenuItem";
+            this.openCustomFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openCustomFileToolStripMenuItem.Size = new System.Drawing.Size(293, 36);
+            this.openCustomFileToolStripMenuItem.Text = "Open Custom File";
+            this.openCustomFileToolStripMenuItem.Click += new System.EventHandler(this.openCustomFileToolStripMenuItem_Click);
+            // 
             // openFIleToolStripMenuItem
             // 
+            this.openFIleToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.openFIleToolStripMenuItem.Name = "openFIleToolStripMenuItem";
-            this.openFIleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openFIleToolStripMenuItem.Size = new System.Drawing.Size(225, 30);
-            this.openFIleToolStripMenuItem.Text = "Open FIle";
+            this.openFIleToolStripMenuItem.Size = new System.Drawing.Size(293, 36);
+            this.openFIleToolStripMenuItem.Text = "Open Braintree FIle";
             this.openFIleToolStripMenuItem.Click += new System.EventHandler(this.openFIleToolStripMenuItem_Click);
             // 
             // loadBrainTreeToolStripMenuItem
             // 
+            this.loadBrainTreeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loadBrainTreeToolStripMenuItem.Name = "loadBrainTreeToolStripMenuItem";
-            this.loadBrainTreeToolStripMenuItem.Size = new System.Drawing.Size(225, 30);
-            this.loadBrainTreeToolStripMenuItem.Text = "Load BrainTree";
+            this.loadBrainTreeToolStripMenuItem.Size = new System.Drawing.Size(293, 36);
+            this.loadBrainTreeToolStripMenuItem.Text = "Load BrainTree API";
             this.loadBrainTreeToolStripMenuItem.Click += new System.EventHandler(this.loadBrainTreeToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(225, 30);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(293, 36);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.changeToleranceToolStripMenuItem});
+            this.changeToleranceToolStripMenuItem,
+            this.smileToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(61, 29);
             this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // changeToleranceToolStripMenuItem
+            // 
+            this.changeToleranceToolStripMenuItem.Enabled = false;
+            this.changeToleranceToolStripMenuItem.Name = "changeToleranceToolStripMenuItem";
+            this.changeToleranceToolStripMenuItem.Size = new System.Drawing.Size(224, 30);
+            this.changeToleranceToolStripMenuItem.Text = "Change Tolerance";
+            this.changeToleranceToolStripMenuItem.Click += new System.EventHandler(this.changeToleranceToolStripMenuItem_Click);
+            // 
+            // smileToolStripMenuItem
+            // 
+            this.smileToolStripMenuItem.Name = "smileToolStripMenuItem";
+            this.smileToolStripMenuItem.Size = new System.Drawing.Size(224, 30);
+            this.smileToolStripMenuItem.Text = "smile!";
+            this.smileToolStripMenuItem.Click += new System.EventHandler(this.smileToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 
@@ -140,9 +169,24 @@
             this.BaseGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BaseGridView.Location = new System.Drawing.Point(0, 0);
             this.BaseGridView.Name = "BaseGridView";
+            this.BaseGridView.ReadOnly = true;
             this.BaseGridView.RowTemplate.Height = 28;
             this.BaseGridView.Size = new System.Drawing.Size(1201, 820);
             this.BaseGridView.TabIndex = 1;
+            // 
+            // FilterComboBox
+            // 
+            this.FilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.FilterComboBox.FormattingEnabled = true;
+            this.FilterComboBox.Location = new System.Drawing.Point(585, 0);
+            this.FilterComboBox.Name = "FilterComboBox";
+            this.FilterComboBox.Size = new System.Drawing.Size(292, 28);
+            this.FilterComboBox.TabIndex = 0;
+            this.FilterComboBox.SelectedIndexChanged += new System.EventHandler(this.FilterComboBox_SelectedIndexChanged);
+            // 
+            // TempOpenFIle
+            // 
+            this.TempOpenFIle.FileName = "openFileDialog1";
             // 
             // Column1
             // 
@@ -160,42 +204,25 @@
             // 
             this.NameColumn.HeaderText = "Name";
             this.NameColumn.Name = "NameColumn";
+            this.NameColumn.ReadOnly = true;
             // 
             // GrossColumn
             // 
             this.GrossColumn.HeaderText = "Gross Amount";
             this.GrossColumn.Name = "GrossColumn";
+            this.GrossColumn.ReadOnly = true;
             // 
             // SubjectColumn
             // 
             this.SubjectColumn.HeaderText = "Currency";
             this.SubjectColumn.Name = "SubjectColumn";
+            this.SubjectColumn.ReadOnly = true;
             // 
             // TypeColumn
             // 
             this.TypeColumn.HeaderText = "Type";
             this.TypeColumn.Name = "TypeColumn";
-            // 
-            // FilterComboBox
-            // 
-            this.FilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.FilterComboBox.FormattingEnabled = true;
-            this.FilterComboBox.Location = new System.Drawing.Point(585, 0);
-            this.FilterComboBox.Name = "FilterComboBox";
-            this.FilterComboBox.Size = new System.Drawing.Size(292, 28);
-            this.FilterComboBox.TabIndex = 0;
-            this.FilterComboBox.SelectedIndexChanged += new System.EventHandler(this.FilterComboBox_SelectedIndexChanged);
-            // 
-            // TempOpenFIle
-            // 
-            this.TempOpenFIle.FileName = "openFileDialog1";
-            // 
-            // changeToleranceToolStripMenuItem
-            // 
-            this.changeToleranceToolStripMenuItem.Name = "changeToleranceToolStripMenuItem";
-            this.changeToleranceToolStripMenuItem.Size = new System.Drawing.Size(224, 30);
-            this.changeToleranceToolStripMenuItem.Text = "Change Tolerance";
-            this.changeToleranceToolStripMenuItem.Click += new System.EventHandler(this.changeToleranceToolStripMenuItem_Click);
+            this.TypeColumn.ReadOnly = true;
             // 
             // GotchaWindow
             // 
@@ -232,14 +259,16 @@
         private System.ComponentModel.BackgroundWorker APIWorker;
         private System.Windows.Forms.ComboBox FilterComboBox;
         private System.Windows.Forms.DataGridView BaseGridView;
+        private System.Windows.Forms.ToolStripMenuItem loadBrainTreeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeToleranceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openCustomFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem smileToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn NameColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn GrossColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn SubjectColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn TypeColumn;
-        private System.Windows.Forms.ToolStripMenuItem loadBrainTreeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem changeToleranceToolStripMenuItem;
     }
 }
 

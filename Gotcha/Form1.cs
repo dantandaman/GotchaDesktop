@@ -57,49 +57,73 @@ namespace Gotcha
         {
             if (TempOpenFIle.ShowDialog() == DialogResult.OK)
             {
-                string path = TempOpenFIle.FileName;
-                BaseGridView.Rows.Clear();
-                _records.Clear();
-                StreamReader sr = new StreamReader(path);
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    maxtrans++;
-                    try
-                    {
-                        var row = line.Split('\t');
-                        TransactionInfo ti = new TransactionInfo();
-                        ti.Date = DateTime.Parse(row[5]);
-                        ti.Id = row[0];
-                        ti.Name = row[1];
-                        //      ti.Subject = row[3];
-                        ti.Currency = row[10];
-                        ti.GrossAmount = float.Parse(row[11], NumberStyles.Currency);
-                        ti.Type = row[21];
-                        // ti.Fees = row[5];
-                        //ti.NetAmount = row[12];
-                        //fixme, eventually pick off row 8 instead?
-                       // ti.Currency = (string)row[10]; ;
-
-
-                        _records.Add(ti);
-                        var displayLine = new string[6];
-                        displayLine[0] = ti.Id;
-                        displayLine[1] = ti.Date.ToString();
-                        displayLine[2] = ti.Name;
-                        displayLine[3] = ti.GrossAmount.ToString();
-                        displayLine[4] = ti.Currency;
-                        displayLine[5] = ti.Type;
-                        BaseGridView.Rows.Add(displayLine);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                }
-                sr.Close();
+                int id = 0;
+                int date = 5;
+                int name = 1;
+                int amount = 11;
+                int currency = 10;
+                int type = 21;
+                char seperator = '\t';
+                OpenFile(TempOpenFIle.FileName, seperator, id, date, name, amount, currency, type);
             }
+        }
+
+        private void OpenFile(string path, char seperator, int id, int date, int name, int amount, int currency, int type )
+        {
+            BaseGridView.Rows.Clear();
+            _records.Clear();
+            StreamReader sr = new StreamReader(path);
+            string line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                maxtrans++;
+                try
+                {
+                    var row = line.Split(seperator);
+                    TransactionInfo ti = new TransactionInfo();
+                    if (date != -1)
+                        ti.Date = DateTime.Parse(row[date]);
+                    if (id != -1) 
+                        ti.Id = row[id];
+                    if (name != -1) 
+                        ti.Name = row[name];
+                    //      ti.Subject = row[3];
+                    if (currency != -1) 
+                        ti.Currency = row[currency];
+                    if (amount != -1) 
+                        ti.GrossAmount = float.Parse(row[amount], NumberStyles.Currency);
+                    if (type != -1) 
+                        ti.Type = row[type];
+                    // ti.Fees = row[5];
+                    //ti.NetAmount = row[12];
+                    //fixme, eventually pick off row 8 instead?
+                    // ti.Currency = (string)row[10]; ;
+
+
+                    _records.Add(ti);
+                    var displayLine = new string[6];
+                    displayLine[0] = ti.Id;
+
+                    if (ti.Date != DateTime.MinValue)
+                        displayLine[1] = ti.Date.ToString();
+                    else
+                        displayLine[1] = "";
+                    displayLine[2] = ti.Name;
+                    if (ti.GrossAmount != float.MinValue)
+                        displayLine[3] = ti.GrossAmount.ToString();
+                    else
+                        displayLine[3] = "";
+                    displayLine[4] = ti.Currency;
+                    displayLine[5] = ti.Type;
+                    BaseGridView.Rows.Add(displayLine);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+            sr.Close();
         }
 
         private void runMeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -483,7 +507,7 @@ namespace Gotcha
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            this.Close();
         }
 
         private void changeToleranceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -491,19 +515,53 @@ namespace Gotcha
 
         }
 
+        private void openCustomFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputFileForm iff = new InputFileForm();
+            iff.ShowDialog();
+            if (iff.DialogResult == DialogResult.OK)
+            {
+                if (TempOpenFIle.ShowDialog() == DialogResult.OK)
+                {
+                    ConfigValues cv = iff.cv;
+                    char seperator = '\t';
+                    if (cv.UseCommas)
+                    {
+                        seperator = ',';
+                    }
+                    OpenFile(TempOpenFIle.FileName, seperator, cv.idCol, cv.dateCol, cv.amountCol, cv.currencyCol, cv.typeCol, cv.typeCol);
+                }
+            }
+        }
 
+        private void smileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SmileForm sf = new SmileForm();
+            sf.ShowDialog();
+        }
     }
     public class TransactionInfo
     {
-        public DateTime Date;
-        public string Type;
-        public string Name;
-        public string Subject;
-        public float GrossAmount;
+        public DateTime Date = DateTime.MinValue;
+        public string Type = "";
+        public string Name = "";
+        public string Subject = "";
+        public float GrossAmount = float.MinValue;
         //public float Fees;
         //public float NetAmount;
-        public string Currency;
-        public string Id;
+        public string Currency = "";
+        public string Id = "";
+    }
+
+    public class ConfigValues
+    {
+        public bool UseCommas;
+        public int idCol;
+        public int dateCol;
+        public int nameCol;
+        public int amountCol;
+        public int currencyCol;
+        public int typeCol;
     }
 
     public class Constants
