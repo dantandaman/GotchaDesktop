@@ -45,12 +45,12 @@
             this.FeesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NetColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TempOpenFIle = new System.Windows.Forms.OpenFileDialog();
-            this.CalculateWorker = new System.ComponentModel.BackgroundWorker();
-            this.APIWorker = new System.ComponentModel.BackgroundWorker();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.FilterComboBox = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.TempOpenFIle = new System.Windows.Forms.OpenFileDialog();
+            this.CalculateWorker = new System.ComponentModel.BackgroundWorker();
+            this.APIWorker = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -206,10 +206,6 @@
             this.NetColumn.HeaderText = "Net Amount";
             this.NetColumn.Name = "NetColumn";
             // 
-            // TempOpenFIle
-            // 
-            this.TempOpenFIle.FileName = "openFileDialog1";
-            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -231,15 +227,11 @@
             // 
             // FilterComboBox
             // 
-            this.FilterComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.FilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.FilterComboBox.FormattingEnabled = true;
-            this.FilterComboBox.Items.AddRange(new object[] {
-            "Less Than $1",
-            "Over $100",
-            "International"});
-            this.FilterComboBox.Location = new System.Drawing.Point(130, 43);
+            this.FilterComboBox.Location = new System.Drawing.Point(19, 31);
             this.FilterComboBox.Name = "FilterComboBox";
-            this.FilterComboBox.Size = new System.Drawing.Size(281, 27);
+            this.FilterComboBox.Size = new System.Drawing.Size(150, 28);
             this.FilterComboBox.TabIndex = 0;
             this.FilterComboBox.SelectedIndexChanged += new System.EventHandler(this.FilterComboBox_SelectedIndexChanged);
             // 
@@ -252,6 +244,10 @@
             this.dataGridView1.RowTemplate.Height = 28;
             this.dataGridView1.Size = new System.Drawing.Size(581, 760);
             this.dataGridView1.TabIndex = 0;
+            // 
+            // TempOpenFIle
+            // 
+            this.TempOpenFIle.FileName = "openFileDialog1";
             // 
             // GotchaWindow
             // 

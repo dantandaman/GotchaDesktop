@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,7 @@ namespace Gotcha
         private void SetupStuff()
         {
             _records = new List<TransactionInfo>();
+            FilterComboBox.Items.AddRange(new string[]{"Less Than $1", "Over $100", "International"});
         }
 
         private void openFIleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -40,11 +42,11 @@ namespace Gotcha
                     {
                         var row = line.Split('\t');
                         TransactionInfo ti = new TransactionInfo();
-                        ti.Date = row[0];
+                        ti.Date = DateTime.Parse(row[0]);
                         //ti.Type = row[1];
                         ti.Name = row[2];
                         //ti.Subject = row[3];
-                        ti.GrossAmount = row[1];
+                        ti.GrossAmount = float.Parse(row[1], NumberStyles.Currency);
                         //ti.Fees = row[5];
                         //ti.NetAmount = row[6];
                         _records.Add(ti);
@@ -66,17 +68,27 @@ namespace Gotcha
 
         private void FilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (FilterComboBox.Text.Contains("Less Than $1"))
+                LessThanADollar();
+        }
 
+        private void LessThanADollar()
+        {
+            foreach(TransactionInfo ti in _records)
+            {
+                if (ti.GrossAmount < 1.00)
+                    MessageBox.Show(ti.GrossAmount + " is less than $1.00");
+            }
         }
     }
     public class TransactionInfo
     {
-        public string Date;
+        public DateTime Date;
         public string Type;
         public string Name;
         public string Subject;
-        public string GrossAmount;
-        public string Fees;
-        public string NetAmount;
+        public float GrossAmount;
+        public float Fees;
+        public float NetAmount;
     }
 }
