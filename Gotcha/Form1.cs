@@ -80,6 +80,41 @@ namespace Gotcha
                     MessageBox.Show(ti.GrossAmount + " is less than $1.00");
             }
         }
+
+        private void fraudword()
+        {
+
+
+        }
+
+
+        private void mostsigdig()
+        {
+            int i, msd;
+            for (i = 0; i < maxtrans; i++)
+            {
+                if (price[i] >= 1.0)
+                    msd = (int)price[i];
+                else
+                    msd = (int)(price[i] * 100.0);
+
+                while (msd != 0)
+                {
+
+                    mostsigdigs[i] = msd % 10;
+                    msd = msd / 10;
+                }
+                printf(" MSD is %d \n", mostsigdigs[i]);
+            }
+
+        }
+
+        private void distrdig()
+        {
+
+        }
+
+
     }
     public class TransactionInfo
     {
