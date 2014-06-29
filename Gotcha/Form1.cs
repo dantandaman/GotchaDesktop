@@ -15,6 +15,10 @@ namespace Gotcha
     public partial class GotchaWindow : Form
     {
         public List<TransactionInfo> _records;
+       
+        int maxtrans;
+        
+
 
         public GotchaWindow()
         {
