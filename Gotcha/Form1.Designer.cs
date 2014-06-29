@@ -38,13 +38,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.BaseGridView = new System.Windows.Forms.DataGridView();
-            this.DateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GrossColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SubjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FeesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NetColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.FilterComboBox = new System.Windows.Forms.ComboBox();
             this.FilterGridView = new System.Windows.Forms.DataGridView();
@@ -56,6 +49,13 @@
             this.TempOpenFIle = new System.Windows.Forms.OpenFileDialog();
             this.CalculateWorker = new System.ComponentModel.BackgroundWorker();
             this.APIWorker = new System.ComponentModel.BackgroundWorker();
+            this.DateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GrossColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SubjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FeesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NetColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -77,7 +77,8 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1329, 33);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
+            this.menuStrip1.Size = new System.Drawing.Size(1311, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -88,42 +89,42 @@
             this.exitToolStripMenuItem,
             this.runMeToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(50, 29);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 22);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openFIleToolStripMenuItem
             // 
             this.openFIleToolStripMenuItem.Name = "openFIleToolStripMenuItem";
             this.openFIleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openFIleToolStripMenuItem.Size = new System.Drawing.Size(225, 30);
+            this.openFIleToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.openFIleToolStripMenuItem.Text = "Open FIle";
             this.openFIleToolStripMenuItem.Click += new System.EventHandler(this.openFIleToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(225, 30);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // runMeToolStripMenuItem
             // 
             this.runMeToolStripMenuItem.Name = "runMeToolStripMenuItem";
-            this.runMeToolStripMenuItem.Size = new System.Drawing.Size(225, 30);
+            this.runMeToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.runMeToolStripMenuItem.Text = "Highlight Sample";
             this.runMeToolStripMenuItem.Click += new System.EventHandler(this.runMeToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(61, 29);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 22);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // toolStrip1
             // 
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.toolStrip1.Location = new System.Drawing.Point(0, 877);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 548);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1329, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1311, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -131,15 +132,17 @@
             // 
             this.panel1.Controls.Add(this.splitContainer1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 33);
+            this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1329, 844);
+            this.panel1.Size = new System.Drawing.Size(1311, 524);
             this.panel1.TabIndex = 2;
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -149,8 +152,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1329, 844);
-            this.splitContainer1.SplitterDistance = 744;
+            this.splitContainer1.Size = new System.Drawing.Size(1311, 524);
+            this.splitContainer1.SplitterDistance = 733;
+            this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 0;
             // 
             // BaseGridView
@@ -169,10 +173,94 @@
             this.NetColumn});
             this.BaseGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BaseGridView.Location = new System.Drawing.Point(0, 0);
+            this.BaseGridView.Margin = new System.Windows.Forms.Padding(2);
             this.BaseGridView.Name = "BaseGridView";
             this.BaseGridView.RowTemplate.Height = 28;
-            this.BaseGridView.Size = new System.Drawing.Size(744, 844);
+            this.BaseGridView.Size = new System.Drawing.Size(733, 524);
             this.BaseGridView.TabIndex = 0;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.IsSplitterFixed = true;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.FilterComboBox);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.FilterGridView);
+            this.splitContainer2.Size = new System.Drawing.Size(575, 524);
+            this.splitContainer2.SplitterDistance = 49;
+            this.splitContainer2.SplitterWidth = 3;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // FilterComboBox
+            // 
+            this.FilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.FilterComboBox.FormattingEnabled = true;
+            this.FilterComboBox.Location = new System.Drawing.Point(13, 20);
+            this.FilterComboBox.Margin = new System.Windows.Forms.Padding(2);
+            this.FilterComboBox.Name = "FilterComboBox";
+            this.FilterComboBox.Size = new System.Drawing.Size(101, 21);
+            this.FilterComboBox.TabIndex = 0;
+            this.FilterComboBox.SelectedIndexChanged += new System.EventHandler(this.FilterComboBox_SelectedIndexChanged);
+            // 
+            // FilterGridView
+            // 
+            this.FilterGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.FilterGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column5,
+            this.Column4});
+            this.FilterGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FilterGridView.Location = new System.Drawing.Point(0, 0);
+            this.FilterGridView.Margin = new System.Windows.Forms.Padding(2);
+            this.FilterGridView.Name = "FilterGridView";
+            this.FilterGridView.RowTemplate.Height = 28;
+            this.FilterGridView.Size = new System.Drawing.Size(575, 472);
+            this.FilterGridView.TabIndex = 0;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Date";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Name";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Amount";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "Subject";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Reason";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
+            // TempOpenFIle
+            // 
+            this.TempOpenFIle.FileName = "openFileDialog1";
             // 
             // DateColumn
             // 
@@ -210,94 +298,16 @@
             this.NetColumn.HeaderText = "Net Amount";
             this.NetColumn.Name = "NetColumn";
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.IsSplitterFixed = true;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.FilterComboBox);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.FilterGridView);
-            this.splitContainer2.Size = new System.Drawing.Size(581, 844);
-            this.splitContainer2.SplitterDistance = 80;
-            this.splitContainer2.TabIndex = 0;
-            // 
-            // FilterComboBox
-            // 
-            this.FilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.FilterComboBox.FormattingEnabled = true;
-            this.FilterComboBox.Location = new System.Drawing.Point(19, 31);
-            this.FilterComboBox.Name = "FilterComboBox";
-            this.FilterComboBox.Size = new System.Drawing.Size(150, 28);
-            this.FilterComboBox.TabIndex = 0;
-            this.FilterComboBox.SelectedIndexChanged += new System.EventHandler(this.FilterComboBox_SelectedIndexChanged);
-            // 
-            // FilterGridView
-            // 
-            this.FilterGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.FilterGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column5,
-            this.Column4});
-            this.FilterGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FilterGridView.Location = new System.Drawing.Point(0, 0);
-            this.FilterGridView.Name = "FilterGridView";
-            this.FilterGridView.RowTemplate.Height = 28;
-            this.FilterGridView.Size = new System.Drawing.Size(581, 760);
-            this.FilterGridView.TabIndex = 0;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Date";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Name";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Amount";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Subject";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Reason";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            // 
-            // TempOpenFIle
-            // 
-            this.TempOpenFIle.FileName = "openFileDialog1";
-            // 
             // GotchaWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1329, 902);
+            this.ClientSize = new System.Drawing.Size(1311, 573);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GotchaWindow";
             this.Text = "Gotcha";
             this.menuStrip1.ResumeLayout(false);
@@ -332,13 +342,6 @@
         private System.Windows.Forms.OpenFileDialog TempOpenFIle;
         private System.ComponentModel.BackgroundWorker CalculateWorker;
         private System.ComponentModel.BackgroundWorker APIWorker;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DateColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NameColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GrossColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SubjectColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FeesColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TypeColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NetColumn;
         private System.Windows.Forms.ToolStripMenuItem runMeToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.ComboBox FilterComboBox;
@@ -348,6 +351,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GrossColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SubjectColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FeesColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TypeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NetColumn;
     }
 }
 

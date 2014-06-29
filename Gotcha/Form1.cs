@@ -67,11 +67,15 @@ namespace Gotcha
                         TransactionInfo ti = new TransactionInfo();
                         ti.Date = DateTime.Parse(row[0]);
                         //ti.Type = row[1];
-                        ti.Name = row[2];
-                        //ti.Subject = row[3];
+                 //       ti.Name = row[2];
+                  //      ti.Subject = row[3];
                         ti.GrossAmount = float.Parse(row[1], NumberStyles.Currency);
-                        //ti.Fees = row[5];
-                        //ti.NetAmount = row[6];
+                       // ti.Fees = row[5];
+                      // ti.NetAmount = row[6];
+                        //fixme, eventually pick off row 8 instead
+                        ti.Currency = "a";
+
+                        
                         _records.Add(ti);
                         BaseGridView.Rows.Add(row);
                     }
@@ -116,6 +120,7 @@ namespace Gotcha
                     row[2] = ti.GrossAmount.ToString();
                     row[3] = ti.Subject;
                     row[4] = "Under $1";
+                   
                     //this is the line which adds it to the table specifically
                     FilterGridView.Rows.Add(row);
                 }
@@ -125,68 +130,43 @@ namespace Gotcha
         private void fraudword()
         {
             //This function checks for international transactions
+            //fixme, I have no idea if the next line works ...
             StreamReader srFW = new StreamReader("SampleData/fraudulentwords.txt");
             int i, j, k;
             char[] temp = new char[300];
-            string[] tempString = new string[100];
-            string tempCurrency = "euro";
-           
-            //FILE *fptr;
-	        //fptr = fopen("fraudulentwords.txt","r");
-	        //printf(" %d \n", fptr);
+            string[] tempFraudWord = new string[100];
+            string tempEntry;
+            
 	        for(i=0;i<NUMFRAUDWORDS;i++)
 	            {
-	         	//if(feof(fptr))
+	         	
                 if(srFW.EndOfStream)
 			       break;
-               tempString[i] = srFW.ToString();
-
-               
-              
-		     //  fscanf(fptr,"%s",&fraudwords[i]);
-   //		   printf(" Fraudword: %s \n",fraudwords[i]);
+               tempFraudWord[i] = srFW.ToString();
 	            }
-	         //fclose(fptr);
+	        
             srFW.Close();
 		
 	        for(j=0;j<NUMFRAUDWORDS;j++)
-	        for(i=0; i<maxtrans; i++)
+            foreach(TransactionInfo ti in _records)
+      
 	        {
-		     // strcpy(temp, strings[i]);
-             //fixme, replace the next for loop with something more elegant
+		   
                 //fixme, somehow force strings to lower case somewhere
-             for (int kk=0;kk<10;kk++)
-             {
-                temp[kk]=strings[i,kk];
-             }
+                //Pick off row8 and call it ti.Currency
+                tempEntry = ti.Currency ; 
 
-
-                //*for(k=0;j<strlen(strings[i]);k++)
-			  //strings[i,k] =  tolower(strings[i,k]);
-                //*/
-			  //temp[k] = tolower(temp[k]);
-		     //temp[k] = '\0';
-
-             if (tempString.Contains(tempCurrency))
+             if (tempEntry.Contains(tempFraudWord[j]))
 		     {
 			  fraudcount[j]++;
-
-		     //	printf( " %s   CONTAINS  %s \n", strings[i], fraudwords[j]);
-			  //break;
+                 // highlight that entry in blue
+                 //fixme, for now, just highlight the first entry if there is a international transaction
+                BaseGridView.Rows[1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
 		     }	
 	    }	
 
 
-     	//fptr = fopen("fraudreport.txt","w");
-	    for(i=0;i<NUMFRAUDWORDS;i++)
-		  if(fraudcount[i] != 0)
-		  {
-              //Eventually here highlight the international transactions
-
-		//	fprintf(fptr," You have %d possibly fradulent activities associated with foreign transaction: %s \n",fraudcount[i],fraudwords[i]);
-		//	printf(" You have %d possibly fradulent activities associated with foreign transaction: %s \n",fraudcount[i],fraudwords[i]);
-		  }
-	 //  fclose(fptr);
+	
 	
 
 
@@ -264,5 +244,6 @@ namespace Gotcha
         public float GrossAmount;
         public float Fees;
         public float NetAmount;
+        public string Currency;
     }
 }
