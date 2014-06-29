@@ -16,13 +16,13 @@ namespace Gotcha
     {
         public List<TransactionInfo> _records;
        
-        int maxtrans;
+        int maxtrans=200;
         int[] mostsigdigs = new int[1000];
         float[] price = new float[1000];
         int[] distrdigs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         float erro, worstcase;
         float[] percdigs = new float[10];
-        float[] percdigsexp = {(float)30.1,(float)17.6,(float)12.5,(float)9.7,(float)7.9,(float)6.7,(float)5.8,(float)5.1,(float)4.6};
+        float[] percdigsexp = {(float)30.1,(float)17.6,(float)12.5,(float)9.7,(float)7.9,(float)6.7,(float)5.8,(float)5.1,(float)4.6,0};
         float wctolerance=(float)0.009;
 
         public GotchaWindow()
@@ -153,6 +153,7 @@ namespace Gotcha
             for (i = 0; i < 10; i++)
             {
                 percdigs[i] = (float)(distrdigs[i]) * (float)100.0 / (float)maxtrans;
+            //    erro = (float)0.1;
                 erro = erro + (percdigs[i] - percdigsexp[i]) * (percdigs[i] - percdigsexp[i]);
             //    printf(" %d  ->  %d  -> %f\n", i, distrdigs[i], percdigs[i]);
             }
@@ -161,14 +162,15 @@ namespace Gotcha
                 worstcase = worstcase + percdigsexp[i] * percdigsexp[i];
             worstcase = worstcase + (100 - (float)4.58) * (100 - (float)4.58);
 
-            if(worstcase < wctolerance)
+            if(erro > wctolerance)
             {
               //We suspect fraud in the entire list. We need to give some type of warning
                 //I'm going to try to highlight the entire first column in orange
           
-
-                for(int ii=1;ii<maxtrans;i++)
-                {BaseGridView.Rows[ii].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Orange };
+               
+                for(int ii=1;ii<maxtrans;ii++)
+                {
+                    BaseGridView.Rows[ii].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Orange };
                 }
             }
 
