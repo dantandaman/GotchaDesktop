@@ -33,6 +33,7 @@ namespace Gotcha
             FilterComboBox.Items.AddRange(new string[]{"Less Than $1", "Over $100", "International"});
         }
 
+        //I will shift this code out once I get the API to read from PayPal done
         private void openFIleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (TempOpenFIle.ShowDialog() == DialogResult.OK)
@@ -67,6 +68,7 @@ namespace Gotcha
 
         private void runMeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //this highlights the specific cell #3 in row #5
             BaseGridView.Rows[5].Cells[3].Style = new DataGridViewCellStyle { BackColor = Color.Yellow };
         }
 
@@ -82,12 +84,15 @@ namespace Gotcha
             {
                 if (ti.GrossAmount < 1.00)
                 {
+                    //this will add the result ti to the 2nd display view
+                    //you can reorder how the stuff is displayed, just change 
                     string[] row = new string[5];
                     row[0] = ti.Date.ToString();
                     row[1] = ti.Name;
                     row[2] = ti.GrossAmount.ToString();
                     row[3] = ti.Subject;
                     row[4] = "Under $1";
+                    //this is the line which adds it to the table specifically
                     FilterGridView.Rows.Add(row);
                 }
             }
