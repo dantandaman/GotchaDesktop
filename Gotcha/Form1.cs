@@ -20,21 +20,21 @@ namespace Gotcha
     {
         public List<TransactionInfo> _records;
 
-        int LIMITTRANS=1000; 
-        int NUMFRAUDWORDS=20;
-        int maxtrans=0;
+        int LIMITTRANS = 1000;
+        int NUMFRAUDWORDS = 20;
+        int maxtrans = 0;
         int[] mostsigdigs = new int[1000];
         float[] price = new float[1000];
         int[] distrdigs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         float erro, worstcase;
         float[] percdigs = new float[10];
-        float[] percdigsexp = {(float)30.1,(float)17.6,(float)12.5,(float)9.7,(float)7.9,(float)6.7,(float)5.8,(float)5.1,(float)4.6,0};
-        float wctolerance=(float)0.009;
-        char[,] fraudwords = new char[1000,20];
+        float[] percdigsexp = { (float)30.1, (float)17.6, (float)12.5, (float)9.7, (float)7.9, (float)6.7, (float)5.8, (float)5.1, (float)4.6, 0 };
+        float wctolerance = (float)0.009;
+        char[,] fraudwords = new char[1000, 20];
         int[] fraudcount = new int[1000];
-        char [,] strings = new char[1000,30];
-       
-      
+        char[,] strings = new char[1000, 30];
+
+
 
 
 
@@ -49,7 +49,7 @@ namespace Gotcha
         private void SetupStuff()
         {
             _records = new List<TransactionInfo>();
-            FilterComboBox.Items.AddRange(new string[]{"Less Than $1", "Over $100", "International","Benford's law check"});
+            FilterComboBox.Items.AddRange(new string[] { "Less Than $1", "Over $100", "International", "Benford's law check" });
         }
 
         //I will shift this code out once I get the API to read from PayPal done
@@ -60,29 +60,29 @@ namespace Gotcha
                 string path = TempOpenFIle.FileName;
                 StreamReader sr = new StreamReader(path);
                 string line;
-                while((line = sr.ReadLine()) != null)
+                while ((line = sr.ReadLine()) != null)
                 {
                     maxtrans++;
                     try
                     {
                         var row = line.Split('\t');
                         TransactionInfo ti = new TransactionInfo();
-                        ti.Date = DateTime.Parse(row[0]);
+                        //  ti.Date = DateTime.Parse(row[0]);
                         //ti.Type = row[1];
-                 //       ti.Name = row[2];
-                  //      ti.Subject = row[3];
-                        ti.GrossAmount = float.Parse(row[1], NumberStyles.Currency);
-                       // ti.Fees = row[5];
-                      // ti.NetAmount = row[6];
+                        //       ti.Name = row[2];
+                        //      ti.Subject = row[3];
+                        ti.GrossAmount = float.Parse(row[11], NumberStyles.Currency);
+                        // ti.Fees = row[5];
+                        //ti.NetAmount = row[12];
                         //fixme, eventually pick off row 8 instead?
-                        ti.Currency = "rupee";
+                        ti.Currency = (string)row[10]; ;
 
-                        
+
                         _records.Add(ti);
                         BaseGridView.Rows.Add(row);
-                       
+
                     }
-                     catch (Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.ToString());
                     }
@@ -101,13 +101,13 @@ namespace Gotcha
         {
             if (FilterComboBox.Text.Contains("Less Than $1"))
                 LessThanADollar();
-            if(FilterComboBox.Text.Contains("law"))
+            if (FilterComboBox.Text.Contains("law"))
             { //call the two related functions 
-              mostsigdig();
-         	  distrdig();
+                mostsigdig();
+                distrdig();
             }
-            if(FilterComboBox.Text.Contains("International"))
-            { fraudword(); }
+            if (FilterComboBox.Text.Contains("International"))
+            { easyfraudword(); }
         }
 
         private void LessThanADollar()
@@ -130,13 +130,13 @@ namespace Gotcha
             //        row[2] = ti.GrossAmount.ToString();
             //        row[3] = ti.Subject;
             //        row[4] = "Under $1";
-                   
-                
+
+
             //        //this is the line which adds it to the table specifically
             //        FilterGridView.Rows.Add(row);
             //        */
             //        BaseGridView.Rows[lineCounter-1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green};
-                 
+
 
             //    }
             //}
@@ -219,6 +219,37 @@ namespace Gotcha
             }
         }
 
+
+        private void easyfraudword()
+        {
+            string tempEntry;
+            int lineCounter = 0;
+            lineCounter = 0;
+            foreach (TransactionInfo ti in _records)
+            {
+                lineCounter++;
+                //fixme, somehow force strings to lower case somewhere
+                //fixme, ti.Currency isn't defined correctly above
+                tempEntry = ti.Currency;
+
+
+                if (tempEntry != "USD")
+                {
+                    //fraudcount[j]++;
+                    // highlight that entry in blue
+                    //fixme, retest once you fix errors above
+                    BaseGridView.Rows[lineCounter - 1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
+                };
+
+            }
+
+
+
+        }
+
+
+
+
         private void fraudword()
         {
             //This function checks for international transactions
@@ -283,11 +314,11 @@ namespace Gotcha
                     mostsigdigs[i] = msd % 10;
                     msd = msd / 10;
                 }
-            //    printf(" MSD is %d \n", mostsigdigs[i]);
+                //    printf(" MSD is %d \n", mostsigdigs[i]);
 
 
             }
-            
+
         }
 
         private void distrdig()
@@ -299,26 +330,26 @@ namespace Gotcha
             for (i = 0; i < maxtrans; i++)
                 distrdigs[mostsigdigs[i]]++;
             erro = 0;
-          //  printf(" Distribution of digits are \n");
+            //  printf(" Distribution of digits are \n");
             for (i = 0; i < 10; i++)
             {
                 percdigs[i] = (float)(distrdigs[i]) * (float)100.0 / (float)maxtrans;
-            //    erro = (float)0.1;
+                //    erro = (float)0.1;
                 erro = erro + (percdigs[i] - percdigsexp[i]) * (percdigs[i] - percdigsexp[i]);
-            //    printf(" %d  ->  %d  -> %f\n", i, distrdigs[i], percdigs[i]);
+                //    printf(" %d  ->  %d  -> %f\n", i, distrdigs[i], percdigs[i]);
             }
             worstcase = 0;
             for (i = 0; i < 9; i++)
                 worstcase = worstcase + percdigsexp[i] * percdigsexp[i];
             worstcase = worstcase + (100 - (float)4.58) * (100 - (float)4.58);
 
-            if(erro > wctolerance)
+            if (erro > wctolerance)
             {
-              //We suspect fraud in the entire list. We need to give some type of warning
+                //We suspect fraud in the entire list. We need to give some type of warning
                 //I'm going to try to highlight the entire first column in orange
-          
 
-                for(int ii=0;ii<maxtrans;ii++)
+
+                for (int ii = 0; ii < maxtrans; ii++)
                 {
                     BaseGridView.Rows[ii].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Orange };
                 }
