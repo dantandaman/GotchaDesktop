@@ -10,13 +10,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
+
 namespace Gotcha
 {
     public partial class GotchaWindow : Form
     {
         public List<TransactionInfo> _records;
+
+        int LIMITTRANS=1000; 
+        int NUMFRAUDWORDS=20;
        
         int maxtrans=200;
+        //fixme we should calculate maxtrans eventually
         int[] mostsigdigs = new int[1000];
         float[] price = new float[1000];
         int[] distrdigs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -24,6 +30,13 @@ namespace Gotcha
         float[] percdigs = new float[10];
         float[] percdigsexp = {(float)30.1,(float)17.6,(float)12.5,(float)9.7,(float)7.9,(float)6.7,(float)5.8,(float)5.1,(float)4.6,0};
         float wctolerance=(float)0.009;
+        char[,] fraudwords = new char[1000,20];
+        int[] fraudcount = new int[1000];
+        char [,] strings = new char[1000,30];
+      
+
+
+
 
         public GotchaWindow()
         {
@@ -111,6 +124,70 @@ namespace Gotcha
 
         private void fraudword()
         {
+            //This function checks for international transactions
+            StreamReader srFW = new StreamReader("SampleData/fraudulentwords.txt");
+            int i, j, k;
+            char[] temp = new char[300];
+            string[] tempString = new string[100];
+            string tempCurrency = "euro";
+           
+            //FILE *fptr;
+	        //fptr = fopen("fraudulentwords.txt","r");
+	        //printf(" %d \n", fptr);
+	        for(i=0;i<NUMFRAUDWORDS;i++)
+	            {
+	         	//if(feof(fptr))
+                if(srFW.EndOfStream)
+			       break;
+               tempString[i] = srFW.ToString();
+
+               
+              
+		     //  fscanf(fptr,"%s",&fraudwords[i]);
+   //		   printf(" Fraudword: %s \n",fraudwords[i]);
+	            }
+	         //fclose(fptr);
+            srFW.Close();
+		
+	        for(j=0;j<NUMFRAUDWORDS;j++)
+	        for(i=0; i<maxtrans; i++)
+	        {
+		     // strcpy(temp, strings[i]);
+             //fixme, replace the next for loop with something more elegant
+                //fixme, somehow force strings to lower case somewhere
+             for (int kk=0;kk<10;kk++)
+             {
+                temp[kk]=strings[i,kk];
+             }
+
+
+                //*for(k=0;j<strlen(strings[i]);k++)
+			  //strings[i,k] =  tolower(strings[i,k]);
+                //*/
+			  //temp[k] = tolower(temp[k]);
+		     //temp[k] = '\0';
+
+             if (tempString.Contains(tempCurrency))
+		     {
+			  fraudcount[j]++;
+
+		     //	printf( " %s   CONTAINS  %s \n", strings[i], fraudwords[j]);
+			  //break;
+		     }	
+	    }	
+
+
+     	//fptr = fopen("fraudreport.txt","w");
+	    for(i=0;i<NUMFRAUDWORDS;i++)
+		  if(fraudcount[i] != 0)
+		  {
+              //Eventually here highlight the international transactions
+
+		//	fprintf(fptr," You have %d possibly fradulent activities associated with foreign transaction: %s \n",fraudcount[i],fraudwords[i]);
+		//	printf(" You have %d possibly fradulent activities associated with foreign transaction: %s \n",fraudcount[i],fraudwords[i]);
+		  }
+	 //  fclose(fptr);
+	
 
 
         }
@@ -167,7 +244,7 @@ namespace Gotcha
               //We suspect fraud in the entire list. We need to give some type of warning
                 //I'm going to try to highlight the entire first column in orange
           
-               
+
                 for(int ii=1;ii<maxtrans;ii++)
                 {
                     BaseGridView.Rows[ii].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Orange };
