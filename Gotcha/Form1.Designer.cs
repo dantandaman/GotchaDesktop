@@ -36,23 +36,24 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.DateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SubjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GrossColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FeesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NetColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BaseGridView = new System.Windows.Forms.DataGridView();
             this.TempOpenFIle = new System.Windows.Forms.OpenFileDialog();
             this.CalculateWorker = new System.ComponentModel.BackgroundWorker();
             this.APIWorker = new System.ComponentModel.BackgroundWorker();
+            this.DateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GrossColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SubjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FeesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NetColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.runMeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BaseGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -70,7 +71,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openFIleToolStripMenuItem,
-            this.exitToolStripMenuItem});
+            this.exitToolStripMenuItem,
+            this.runMeToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(50, 29);
             this.fileToolStripMenuItem.Text = "File";
@@ -122,31 +124,35 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.dataGridView1);
+            this.splitContainer1.Panel1.Controls.Add(this.BaseGridView);
             this.splitContainer1.Size = new System.Drawing.Size(1329, 844);
             this.splitContainer1.SplitterDistance = 744;
             this.splitContainer1.TabIndex = 0;
             // 
-            // dataGridView1
+            // BaseGridView
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.BaseGridView.AllowUserToAddRows = false;
+            this.BaseGridView.AllowUserToDeleteRows = false;
+            this.BaseGridView.AllowUserToOrderColumns = true;
+            this.BaseGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.BaseGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.DateColumn,
-            this.TypeColumn,
             this.NameColumn,
-            this.SubjectColumn,
             this.GrossColumn,
+            this.SubjectColumn,
             this.FeesColumn,
+            this.TypeColumn,
             this.NetColumn});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(744, 844);
-            this.dataGridView1.TabIndex = 0;
+            this.BaseGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BaseGridView.Location = new System.Drawing.Point(0, 0);
+            this.BaseGridView.Name = "BaseGridView";
+            this.BaseGridView.RowTemplate.Height = 28;
+            this.BaseGridView.Size = new System.Drawing.Size(744, 844);
+            this.BaseGridView.TabIndex = 0;
+            // 
+            // TempOpenFIle
+            // 
+            this.TempOpenFIle.FileName = "openFileDialog1";
             // 
             // DateColumn
             // 
@@ -154,39 +160,42 @@
             this.DateColumn.Name = "DateColumn";
             this.DateColumn.ReadOnly = true;
             // 
-            // TypeColumn
-            // 
-            this.TypeColumn.HeaderText = "Type";
-            this.TypeColumn.Name = "TypeColumn";
-            // 
             // NameColumn
             // 
             this.NameColumn.HeaderText = "Name";
             this.NameColumn.Name = "NameColumn";
-            // 
-            // SubjectColumn
-            // 
-            this.SubjectColumn.HeaderText = "Subject";
-            this.SubjectColumn.Name = "SubjectColumn";
             // 
             // GrossColumn
             // 
             this.GrossColumn.HeaderText = "Gross Amount";
             this.GrossColumn.Name = "GrossColumn";
             // 
+            // SubjectColumn
+            // 
+            this.SubjectColumn.HeaderText = "Subject";
+            this.SubjectColumn.Name = "SubjectColumn";
+            // 
             // FeesColumn
             // 
             this.FeesColumn.HeaderText = "Fees";
             this.FeesColumn.Name = "FeesColumn";
+            // 
+            // TypeColumn
+            // 
+            this.TypeColumn.HeaderText = "Type";
+            this.TypeColumn.Name = "TypeColumn";
             // 
             // NetColumn
             // 
             this.NetColumn.HeaderText = "Net Amount";
             this.NetColumn.Name = "NetColumn";
             // 
-            // TempOpenFIle
+            // runMeToolStripMenuItem
             // 
-            this.TempOpenFIle.FileName = "openFileDialog1";
+            this.runMeToolStripMenuItem.Name = "runMeToolStripMenuItem";
+            this.runMeToolStripMenuItem.Size = new System.Drawing.Size(225, 30);
+            this.runMeToolStripMenuItem.Text = "Run Me";
+            this.runMeToolStripMenuItem.Click += new System.EventHandler(this.runMeToolStripMenuItem_Click);
             // 
             // GotchaWindow
             // 
@@ -205,7 +214,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BaseGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -221,17 +230,18 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DateColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TypeColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NameColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SubjectColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GrossColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FeesColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NetColumn;
+        private System.Windows.Forms.DataGridView BaseGridView;
         private System.Windows.Forms.OpenFileDialog TempOpenFIle;
         private System.ComponentModel.BackgroundWorker CalculateWorker;
         private System.ComponentModel.BackgroundWorker APIWorker;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GrossColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SubjectColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FeesColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TypeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NetColumn;
+        private System.Windows.Forms.ToolStripMenuItem runMeToolStripMenuItem;
     }
 }
 

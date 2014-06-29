@@ -48,6 +48,7 @@ namespace Gotcha
                         //ti.Fees = row[5];
                         //ti.NetAmount = row[6];
                         _records.Add(ti);
+                        BaseGridView.Rows.Add(row);
                     }
                     catch (Exception ex)
                     {
@@ -56,6 +57,11 @@ namespace Gotcha
                 }
                 sr.Close();
             }
+        }
+
+        private void runMeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
     public class TransactionInfo
