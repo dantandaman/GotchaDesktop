@@ -22,9 +22,7 @@ namespace Gotcha
 
         int LIMITTRANS=1000; 
         int NUMFRAUDWORDS=20;
-       
-        int maxtrans=200;
-        //fixme we should calculate maxtrans eventually
+        int maxtrans=0;
         int[] mostsigdigs = new int[1000];
         float[] price = new float[1000];
         int[] distrdigs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -35,6 +33,7 @@ namespace Gotcha
         char[,] fraudwords = new char[1000,20];
         int[] fraudcount = new int[1000];
         char [,] strings = new char[1000,30];
+       
       
 
 
@@ -63,6 +62,7 @@ namespace Gotcha
                 string line;
                 while((line = sr.ReadLine()) != null)
                 {
+                    maxtrans++;
                     try
                     {
                         var row = line.Split('\t');
@@ -74,14 +74,15 @@ namespace Gotcha
                         ti.GrossAmount = float.Parse(row[1], NumberStyles.Currency);
                        // ti.Fees = row[5];
                       // ti.NetAmount = row[6];
-                        //fixme, eventually pick off row 8 instead
-                        ti.Currency = "a";
+                        //fixme, eventually pick off row 8 instead?
+                        ti.Currency = "rupee";
 
                         
                         _records.Add(ti);
                         BaseGridView.Rows.Add(row);
+                       
                     }
-                    catch (Exception ex)
+                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.ToString());
                     }
@@ -104,18 +105,23 @@ namespace Gotcha
             { //call the two related functions 
               mostsigdig();
          	  distrdig();
-
             }
+            if(FilterComboBox.Text.Contains("International"))
+            { fraudword(); }
         }
 
         private void LessThanADollar()
         {
+            int lineCounter = 0;
             foreach(TransactionInfo ti in _records)
             {
+                lineCounter++;
                 if (ti.GrossAmount < 1.00)
                 {
                     //this will add the result ti to the 2nd display view
                     //you can reorder how the stuff is displayed, just change 
+                    //fixme,  this is highlighting neg. values, and I don't want it to.
+                    /*
                     string[] row = new string[5];
                     row[0] = ti.Date.ToString();
                     row[1] = ti.Name;
@@ -123,8 +129,13 @@ namespace Gotcha
                     row[3] = ti.Subject;
                     row[4] = "Under $1";
                    
+                
                     //this is the line which adds it to the table specifically
                     FilterGridView.Rows.Add(row);
+                    */
+                    BaseGridView.Rows[lineCounter-1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Green};
+                 
+
                 }
             }
         }
@@ -132,41 +143,48 @@ namespace Gotcha
         private void fraudword()
         {
             //This function checks for international transactions
-            //fixme, I have no idea if the next line works ...
-            StreamReader srFW = new StreamReader("SampleData/fraudulentwords.txt");
+            //fixme, this is specific to where I put it on my machine
+            StreamReader srFW = new StreamReader(@"C:\Users\mitofskya\Source\Repos\GotchaDesktop\Gotcha\SampleData\fraudulentwords.txt"); ;
+           
             int i, j, k;
             char[] temp = new char[300];
             string[] tempFraudWord = new string[100];
             string tempEntry;
+            int lineCounter = 0;
             
 	        for(i=0;i<NUMFRAUDWORDS;i++)
 	            {
 	         	
                 if(srFW.EndOfStream)
 			       break;
-               tempFraudWord[i] = srFW.ToString();
+                tempFraudWord[i] = srFW.ReadLine();
+                   
 	            }
 	        
             srFW.Close();
 		
-	        for(j=0;j<NUMFRAUDWORDS;j++)
+            for(j=0;j<NUMFRAUDWORDS;j++)
+            {
+             lineCounter = 0;
             foreach(TransactionInfo ti in _records)
       
 	        {
-		   
+                lineCounter++;
                 //fixme, somehow force strings to lower case somewhere
-                //Pick off row8 and call it ti.Currency
-                tempEntry = ti.Currency ; 
+                //fixme, ti.Currency isn't defined correctly above
+                tempEntry = ti.Currency ;
+                
 
              if (tempEntry.Contains(tempFraudWord[j]))
 		     {
 			  fraudcount[j]++;
                  // highlight that entry in blue
-                 //fixme, for now, just highlight the first entry if there is a international transaction
-                BaseGridView.Rows[1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
-		     }	
+                //fixme, retest once you fix errors above
+                BaseGridView.Rows[lineCounter-1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
+             };
+             
 	    }	
-
+        }
 
 	
 	
@@ -227,7 +245,7 @@ namespace Gotcha
                 //I'm going to try to highlight the entire first column in orange
           
 
-                for(int ii=1;ii<maxtrans;ii++)
+                for(int ii=0;ii<maxtrans;ii++)
                 {
                     BaseGridView.Rows[ii].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Orange };
                 }
