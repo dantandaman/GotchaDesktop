@@ -102,8 +102,9 @@ namespace Gotcha
             { //call the two related functions 
               mostsigdig();
          	  distrdig();
-
             }
+            if(FilterComboBox.Text.Contains("International"))
+            { fraudword(); }
         }
 
         private void LessThanADollar()
@@ -114,6 +115,7 @@ namespace Gotcha
                 {
                     //this will add the result ti to the 2nd display view
                     //you can reorder how the stuff is displayed, just change 
+                    //fixme, what I really want here is to highlight the small transaction in the first pane. We can forget about the second pane
                     string[] row = new string[5];
                     row[0] = ti.Date.ToString();
                     row[1] = ti.Name;
@@ -130,8 +132,9 @@ namespace Gotcha
         private void fraudword()
         {
             //This function checks for international transactions
-            //fixme, I have no idea if the next line works ...
-            StreamReader srFW = new StreamReader("SampleData/fraudulentwords.txt");
+            //fixme, this is specific to where I put it on my machine
+            StreamReader srFW = new StreamReader(@"C:\Users\mitofskya\Source\Repos\GotchaDesktop\Gotcha\SampleData\fraudulentwords.txt"); ;
+           
             int i, j, k;
             char[] temp = new char[300];
             string[] tempFraudWord = new string[100];
@@ -142,7 +145,8 @@ namespace Gotcha
 	         	
                 if(srFW.EndOfStream)
 			       break;
-               tempFraudWord[i] = srFW.ToString();
+                tempFraudWord[i] = srFW.ReadLine();
+                   
 	            }
 	        
             srFW.Close();
@@ -153,14 +157,16 @@ namespace Gotcha
 	        {
 		   
                 //fixme, somehow force strings to lower case somewhere
-                //Pick off row8 and call it ti.Currency
-                tempEntry = ti.Currency ; 
+                //fixme, ti.Currency isn't defined correctly above
+                tempEntry = ti.Currency ;
+                //fixme, get rid of the next line once you properly define ti.Currency above
+                tempEntry = "rupee";
 
              if (tempEntry.Contains(tempFraudWord[j]))
 		     {
 			  fraudcount[j]++;
                  // highlight that entry in blue
-                 //fixme, for now, just highlight the first entry if there is a international transaction
+                 //fixme, for now, just highlight the first entry if there is a international transaction eventually highlight that transaction
                 BaseGridView.Rows[1].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Blue };
 		     }	
 	    }	
@@ -225,7 +231,7 @@ namespace Gotcha
                 //I'm going to try to highlight the entire first column in orange
           
 
-                for(int ii=1;ii<maxtrans;ii++)
+                for(int ii=0;ii<maxtrans;ii++)
                 {
                     BaseGridView.Rows[ii].Cells[1].Style = new DataGridViewCellStyle { BackColor = Color.Orange };
                 }
