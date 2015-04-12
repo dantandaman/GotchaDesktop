@@ -69,7 +69,9 @@ namespace Gotcha
                         //ti.Type = row[1];
                  //       ti.Name = row[2];
                   //      ti.Subject = row[3];
-                        ti.GrossAmount = float.Parse(row[1], NumberStyles.Currency);
+                        //For credit card data, uncomment the next line
+                   //     ti.GrossAmount = float.Parse(row[1], NumberStyles.Currency);
+                        ti.GrossAmount = float.Parse(row[8], NumberStyles.Currency);
                        // ti.Fees = row[5];
                       // ti.NetAmount = row[6];
                         //fixme, eventually pick off row 8 instead?
